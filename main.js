@@ -2,25 +2,22 @@
 function calcularPrecioFinal(precioBase, descuento, impuesto) {
     let precioConDescuento = precioBase;
 
-    // Aplicar descuento
+    
     if (descuento > 0) {
         precioConDescuento = precioBase - (precioBase * (descuento / 100));
     }
 
-    // Aplicar impuesto
     let precioFinal = precioConDescuento + (precioConDescuento * (impuesto / 100));
 
     return precioFinal.toFixed(2); // Redondear a dos decimales
 }
 
-// Interacción con el usuario
 alert("¡Bienvenido a la Tienda de Ropa Indimoon!");
 
 let precioBase = parseFloat(prompt("Ingresa el precio base de la prenda (en pesos):"));
 let descuento = parseFloat(prompt("Ingresa el porcentaje de descuento (si no hay, ingresa 0):"));
 let impuesto = 21; // Suponiendo un impuesto fijo del 21%
 
-// Calcular precio final
 let precioFinal = calcularPrecioFinal(precioBase, descuento, impuesto);
 
 // Mostrar resultado al usuario
