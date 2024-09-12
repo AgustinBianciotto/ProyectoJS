@@ -1,74 +1,74 @@
-// Función para calcular el precio final con impuestos y descuentos
-function calcularPrecioFinal(precioBase, descuento, impuesto) {
-    // Validar que el precio base es un número positivo
-    if (isNaN(precioBase) || precioBase <= 0) {
-        alert("El precio base debe ser un número positivo.");
-        return;
+// Array of products
+const productos = [
+    { id: 1, nombre: "Camisa de verano", precio: 19.99 },
+    { id: 2, nombre: "Pantalón de jeans", precio: 29.99 },
+    { id: 3, nombre: "Sombrero", precio: 15.00 },
+];
+
+// Variables
+let carrito = [];
+const impuestoFijo = 21;
+
+// Function to add a product to the cart
+function agregarAlCarrito(idProducto) {
+    const producto = productos.find(p => p.id === idProducto);
+    if (producto) {
+        carrito.push(producto);
+        console.log(`${producto.nombre} agregado al carrito.`);
+    } else {
+        console.log("Producto no encontrado.");
     }
-
-    // Validar que el descuento es un número no negativo
-    if (isNaN(descuento) || descuento < 0) {
-        alert("El porcentaje de descuento debe ser un número positivo o cero.");
-        return;
-    }
-
-    // Validar que el impuesto es un número no negativo
-    if (isNaN(impuesto) || impuesto < 0) {
-        alert("El porcentaje de impuesto debe ser un número positivo o cero.");
-        return;
-    }
-
-    let precioConDescuento = precioBase;
-
-    // Aplicar descuento
-    if (descuento > 0) {
-        precioConDescuento = precioBase - (precioBase * (descuento / 100));
-    }
-
-    // Aplicar impuesto
-    let precioFinal = precioConDescuento + (precioConDescuento * (impuesto / 100));
-
-    return precioFinal.toFixed(2); // Redondear a dos decimales
 }
 
-// Función principal para interactuar con el usuario
+// Function to calculate the total cart value with discount and tax
+function calcularTotalCarrito(descuento) {
+    let subtotal = carrito.reduce((total, producto) => total + producto.precio, 0);
+    let totalConDescuento = subtotal;
+
+    if (descuento > 0) {
+        totalConDescuento = subtotal - (subtotal * (descuento / 100));
+    }
+    let totalConImpuestos = totalConDescuento + (totalConDescuento * (impuestoFijo / 100));
+    return totalConImpuestos.toFixed(2); 
+}
+
+// Function to display the cart contents
+function mostrarCarrito() {
+    if (carrito.length === 0) {
+        console.log("El carrito está vacío.");
+    } else {
+        carrito.forEach(producto => {
+            console.log(`- ${producto.nombre}: $${producto.precio}`);
+        });
+        console.log(`Total con impuestos: $${calcularTotalCarrito(0)}`); 
+    }
+}
+
+// Main function to interact with the user
 function interactuarConUsuario() {
     alert("¡Bienvenido a la Tienda de Ropa Indimoon!");
 
     let continuar = true;
-    let preciosFinales = [];  // Array para almacenar los precios finales
 
     while (continuar) {
-        // Pedir el precio base de la prenda
-        let precioBase = parseFloat(prompt("Ingresa el precio base de la prenda (en pesos):"));
+        let idProducto = parseInt(prompt("Ingresa el ID del producto (1: Camisa, 2: Pantalón, 3: Sombrero) o 0 para salir:"));
+        if (idProducto === 0) break;
 
-        // Pedir el porcentaje de descuento
-        let descuento = parseFloat(prompt("Ingresa el porcentaje de descuento (si no hay, ingresa 0):"));
+        agregarAlCarrito(idProducto);
+        mostrarCarrito();
 
-        // Suponiendo un impuesto fijo del 21%
-        let impuesto = 21;
-
-        // Calcular precio final
-        let precioFinal = calcularPrecioFinal(precioBase, descuento, impuesto);
-
-        if (precioFinal !== undefined) {
-            // Almacenar el precio final en el array
-            preciosFinales.push(precioFinal);
-            // Mostrar resultado al usuario
-            alert("El precio final de la prenda con impuestos y descuentos aplicados es: $" + precioFinal);
+        let aplicarDescuento = confirm("¿Deseas aplicar un descuento en el carrito?");
+        let descuento = 0;
+        if (aplicarDescuento) {
+            descuento = parseFloat(prompt("Ingresa el porcentaje de descuento (si no hay, ingresa 0):"));
         }
 
-        // Preguntar si el usuario desea realizar otro cálculo
-        continuar = confirm("¿Deseas calcular el precio final de otra prenda?");
-    }
+        alert(`El total a pagar con impuestos y descuentos aplicados es: $${calcularTotalCarrito(descuento)}`);
 
-    // Mostrar todos los precios finales calculados
-    if (preciosFinales.length > 0) {
-        alert("Los precios finales calculados fueron:\n" + preciosFinales.join("\n"));
+        continuar = confirm("¿Deseas agregar otro producto?");
     }
 
     alert("¡Gracias por usar la Tienda de Ropa Indimoon!");
 }
 
-// Ejecutar la función principal
 interactuarConUsuario();
