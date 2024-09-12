@@ -36,6 +36,7 @@ function interactuarConUsuario() {
     alert("¡Bienvenido a la Tienda de Ropa Indimoon!");
 
     let continuar = true;
+    let preciosFinales = [];  // Array para almacenar los precios finales
 
     while (continuar) {
         // Pedir el precio base de la prenda
@@ -51,12 +52,19 @@ function interactuarConUsuario() {
         let precioFinal = calcularPrecioFinal(precioBase, descuento, impuesto);
 
         if (precioFinal !== undefined) {
+            // Almacenar el precio final en el array
+            preciosFinales.push(precioFinal);
             // Mostrar resultado al usuario
             alert("El precio final de la prenda con impuestos y descuentos aplicados es: $" + precioFinal);
         }
 
         // Preguntar si el usuario desea realizar otro cálculo
         continuar = confirm("¿Deseas calcular el precio final de otra prenda?");
+    }
+
+    // Mostrar todos los precios finales calculados
+    if (preciosFinales.length > 0) {
+        alert("Los precios finales calculados fueron:\n" + preciosFinales.join("\n"));
     }
 
     alert("¡Gracias por usar la Tienda de Ropa Indimoon!");
